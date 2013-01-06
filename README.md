@@ -3,6 +3,8 @@ wicket-mustache
 
 Provides a specialized panel and some related utilities that enables users to work with Mustache and Apache Wicket.
 
+Current build status: [![Build Status](https://buildhive.cloudbees.com/job/l0rdn1kk0n/job/wicket-mustache/badge/icon)](https://buildhive.cloudbees.com/job/l0rdn1kk0n/job/wicket-mustache/)
+
 **wicket-mustache** dependes on [mustache.java](https://github.com/spullara/mustache.java).
 
 Documentation:
