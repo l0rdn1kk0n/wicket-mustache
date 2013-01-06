@@ -10,6 +10,9 @@ import org.apache.wicket.util.string.Strings;
 
 import java.io.Reader;
 import java.io.StringWriter;
+import java.util.Collection;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * Base util class.
@@ -100,6 +103,80 @@ public final class WicketMustache {
         }
 
         return evaluatedTemplate;
+    }
+
+
+    public static <K, V> ScopedMap<K, V> newScopedMap(final Map<K, V> map) {
+        return new ScopedMap<K, V>(map);
+    }
+
+    public static final class ScopedMap<K, V> implements Map<K, V>, IScope {
+
+        private final Map<K, V> map;
+
+        public ScopedMap(Map<K, V> map) {
+            this.map = map;
+        }
+
+        @Override
+        public int size() {
+            return map.size();
+        }
+
+        @Override
+        public boolean isEmpty() {
+            return map.isEmpty();
+        }
+
+        @Override
+        public boolean containsKey(Object o) {
+            return map.containsKey(o);
+        }
+
+        @Override
+        public boolean containsValue(Object o) {
+            return map.containsValue(o);
+        }
+
+        @Override
+        public V get(Object o) {
+            return map.get(o);
+        }
+
+        @Override
+        public V put(K k, V v) {
+            return map.put(k, v);
+        }
+
+        @Override
+        public V remove(Object o) {
+            return map.remove(o);
+        }
+
+        @Override
+        public void putAll(Map<? extends K, ? extends V> map) {
+            this.map.putAll(map);
+        }
+
+        @Override
+        public void clear() {
+            map.clear();
+        }
+
+        @Override
+        public Set<K> keySet() {
+            return map.keySet();
+        }
+
+        @Override
+        public Collection<V> values() {
+            return map.values();
+        }
+
+        @Override
+        public Set<Entry<K, V>> entrySet() {
+            return map.entrySet();
+        }
     }
 
     /**
