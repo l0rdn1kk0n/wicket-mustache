@@ -14,7 +14,6 @@ import org.apache.wicket.util.string.Strings;
 
 import java.io.InputStreamReader;
 import java.io.Reader;
-import java.util.Map;
 
 /**
  * An {@link org.apache.wicket.markup.html.IHeaderContributor} implementation that renders a
@@ -26,14 +25,14 @@ public class MustacheTemplate extends Behavior {
     private static final long serialVersionUID = 14121982L;
 
     private final IModel<String> templateName;
-    private final IModel<Map<String, Object>> templateData;
+    private final IModel<IScope> templateData;
 
     /**
      * Construct. Default template name is used "${ComponentSimpleClassName}.mustache"
      *
      * @param templateData The template data
      */
-    public MustacheTemplate(final IModel<Map<String, Object>> templateData) {
+    public MustacheTemplate(final IModel<IScope> templateData) {
         this(Model.of(""), templateData);
     }
 
@@ -43,7 +42,7 @@ public class MustacheTemplate extends Behavior {
      * @param templateName The template name
      * @param templateData The template data
      */
-    public MustacheTemplate(final IModel<String> templateName, final IModel<Map<String, Object>> templateData) {
+    public MustacheTemplate(final IModel<String> templateName, final IModel<IScope> templateData) {
         super();
 
         Args.notNull(templateData, "templateData");

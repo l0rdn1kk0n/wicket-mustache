@@ -25,7 +25,7 @@ import java.util.Map;
  *
  * @author miha
  */
-public abstract class MustachePanel extends GenericPanel<Map<String, Object>> implements IMarkupResourceStreamProvider, IMarkupCacheKeyProvider {
+public abstract class MustachePanel extends GenericPanel<IScope> implements IMarkupResourceStreamProvider, IMarkupCacheKeyProvider {
     private static final long serialVersionUID = 1L;
 
     private transient String evaluatedTemplate;
@@ -37,7 +37,7 @@ public abstract class MustachePanel extends GenericPanel<Map<String, Object>> im
      * @param id    Component id
      * @param model Model with variables that can be substituted by mustache.
      */
-    public MustachePanel(final String id, final IModel<Map<String, Object>> model) {
+    public MustachePanel(final String id, final IModel<IScope> model) {
         super(id, model);
 
         this.escapeHtml = Model.of(false);

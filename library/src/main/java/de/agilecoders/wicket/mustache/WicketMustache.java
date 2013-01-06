@@ -10,8 +10,6 @@ import org.apache.wicket.util.string.Strings;
 
 import java.io.Reader;
 import java.io.StringWriter;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Base util class.
@@ -36,7 +34,7 @@ public final class WicketMustache {
      * @param templateResource The template resource
      * @return an instance of {@link MustachePanel}
      */
-    public static MustachePanel newMustacheTemplatePanel(final String id, final IModel<Map<String, Object>> model, final IResourceStream templateResource) {
+    public static MustachePanel newMustacheTemplatePanel(final String id, final IModel<IScope> model, final IResourceStream templateResource) {
         Args.notNull(templateResource, "templateResource");
         Args.notNull(model, "model");
 
@@ -58,7 +56,7 @@ public final class WicketMustache {
      * @return compiled template
      */
     public static String compile(final Reader templateReader, final String templateId) {
-        return compile(templateReader, templateId, new HashMap<String, Object>(), false);
+        return compile(templateReader, templateId, null, false);
     }
 
     /**
@@ -69,7 +67,7 @@ public final class WicketMustache {
      * @param data           The template data
      * @return compiled template
      */
-    public static String compile(final Reader templateReader, final String templateId, final Map<String, Object> data) {
+    public static String compile(final Reader templateReader, final String templateId, final IScope data) {
         return compile(templateReader, templateId, data, false);
     }
 
@@ -82,7 +80,7 @@ public final class WicketMustache {
      * @param escapeHtml     whether to escape HTML characters
      * @return compiled template
      */
-    public static String compile(final Reader templateReader, final String templateId, final Map<String, Object> data, final boolean escapeHtml) {
+    public static String compile(final Reader templateReader, final String templateId, final IScope data, final boolean escapeHtml) {
         // create a writer for capturing the mustache output
         final StringWriter writer = new StringWriter();
         final String evaluatedTemplate;
