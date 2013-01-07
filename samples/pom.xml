@@ -40,6 +40,10 @@
             <groupId>de.agilecoders.wicket.mustache</groupId>
             <artifactId>wicket-mustache</artifactId>
         </dependency>
+        <dependency>
+            <groupId>de.agilecoders.wicket.webjars</groupId>
+            <artifactId>wicket-webjars</artifactId>
+        </dependency>
 
         <!-- LOGGING DEPENDENCIES - LOG4J -->
         <dependency>

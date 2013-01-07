@@ -3,6 +3,7 @@ package de.agilecoders.wicket.mustache;
 import com.github.mustachejava.DefaultMustacheFactory;
 import com.github.mustachejava.Mustache;
 import com.github.mustachejava.MustacheFactory;
+import de.agilecoders.wicket.mustache.markup.html.MustachePanel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.util.lang.Args;
 import org.apache.wicket.util.resource.IResourceStream;
@@ -11,6 +12,9 @@ import org.apache.wicket.util.string.Strings;
 import java.io.Reader;
 import java.io.StringWriter;
 import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
+import java.util.ListIterator;
 import java.util.Map;
 import java.util.Set;
 
@@ -29,13 +33,13 @@ public final class WicketMustache {
     }
 
     /**
-     * Convenience factory method to create a {@link MustachePanel} instance with a given
+     * Convenience factory method to create a {@link de.agilecoders.wicket.mustache.markup.html.MustachePanel} instance with a given
      * {@link IResourceStream} template resource.
      *
      * @param id               Component id
      * @param model            optional model for variable substitution.
      * @param templateResource The template resource
-     * @return an instance of {@link MustachePanel}
+     * @return an instance of {@link de.agilecoders.wicket.mustache.markup.html.MustachePanel}
      */
     public static MustachePanel newMustacheTemplatePanel(final String id, final IModel<IScope> model, final IResourceStream templateResource) {
         Args.notNull(templateResource, "templateResource");
@@ -105,9 +109,136 @@ public final class WicketMustache {
         return evaluatedTemplate;
     }
 
+    public static <V> ScopedList<V> newScopedList(final List<V> list) {
+        return new ScopedList<V>(list);
+    }
 
     public static <K, V> ScopedMap<K, V> newScopedMap(final Map<K, V> map) {
         return new ScopedMap<K, V>(map);
+    }
+
+    public static final class ScopedList<V> implements List<V>, IScope {
+
+        private final List<V> list;
+
+        public ScopedList(List<V> list) {
+            this.list = list;
+        }
+
+        @Override
+        public int size() {
+            return list.size();
+        }
+
+        @Override
+        public boolean isEmpty() {
+            return list.isEmpty();
+        }
+
+        @Override
+        public boolean contains(Object o) {
+            return list.contains(o);
+        }
+
+        @Override
+        public Iterator<V> iterator() {
+            return list.iterator();
+        }
+
+        @Override
+        public Object[] toArray() {
+            return list.toArray();
+        }
+
+        @Override
+        public <T> T[] toArray(T[] ts) {
+            return list.toArray(ts);
+        }
+
+        @Override
+        public boolean add(V v) {
+            return list.add(v);
+        }
+
+        @Override
+        public boolean remove(Object o) {
+            return list.remove(o);
+        }
+
+        @Override
+        public boolean containsAll(Collection<?> objects) {
+            return list.containsAll(objects);
+        }
+
+        @Override
+        public boolean addAll(Collection<? extends V> vs) {
+            return list.addAll(vs);
+        }
+
+        @Override
+        public boolean addAll(int i, Collection<? extends V> vs) {
+            return list.addAll(i, vs);
+        }
+
+        @Override
+        public boolean removeAll(Collection<?> objects) {
+            return list.removeAll(objects);
+        }
+
+        @Override
+        public boolean retainAll(Collection<?> objects) {
+            return list.retainAll(objects);
+        }
+
+        @Override
+        public void clear() {
+            list.clear();
+        }
+
+        @Override
+        public V get(int i) {
+            return list.get(i);
+        }
+
+        @Override
+        public V set(int i, V v) {
+            return list.set(i, v);
+        }
+
+        @Override
+        public void add(int i, V v) {
+            list.add(i, v);
+        }
+
+        @Override
+        public V remove(int i) {
+            return list.remove(i);
+        }
+
+        @Override
+        public int indexOf(Object o) {
+            return list.indexOf(o);
+        }
+
+        @Override
+        public int lastIndexOf(Object o) {
+            return list.lastIndexOf(o);
+        }
+
+        @Override
+        public ListIterator<V> listIterator() {
+            return list.listIterator();
+        }
+
+        @Override
+        public ListIterator<V> listIterator(int i) {
+            return list.listIterator(i);
+        }
+
+        @Override
+        public List<V> subList(int i, int i2) {
+            return list.subList(i, i2);
+        }
     }
 
     public static final class ScopedMap<K, V> implements Map<K, V>, IScope {

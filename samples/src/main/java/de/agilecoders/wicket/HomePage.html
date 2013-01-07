@@ -17,20 +17,24 @@
         <div id="bd">
             <h3>Template:</h3>
 
-            <p>
-                <pre><code>Items:&lt;br&gt;
-                    {{#items}}
-                    Name: {{name}}&lt;br&gt;
-                    Price: {{price}}&lt;br&gt;
-                    {{#features}}
-                    Feature: {{description}}&lt;br&gt;
-                    {{/features}}&lt;br&gt;
-                    {{/items}}</code></pre>
+            <p><pre><code>Items:&lt;br&gt;
+            {{#items}}
+            Name: {{name}}&lt;br&gt;
+            Price: {{price}}&lt;br&gt;
+            {{#features}}
+            "Feature": {{.}}&lt;br&gt;
+            {{/features}}&lt;br&gt;
+            {{/items}}</code></pre>
             </p>
 
-            <h3>Result:</h3>
+            <h3>Result (server side rendering):</h3>
 
             <p wicket:id="template">
+            </p>
+
+            <h3>Result (client side rendering):</h3>
+
+            <p wicket:id="template-client">
             </p>
         </div>
         <div id="ft">

@@ -67,6 +67,18 @@
                 <artifactId>mustachejs</artifactId>
                 <version>${mustachejs.version}</version>
             </dependency>
+
+            <dependency>
+                <groupId>de.agilecoders.wicket.webjars</groupId>
+                <artifactId>wicket-webjars</artifactId>
+                <version>${wicket-webjars.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.codehaus.jackson</groupId>
+                <artifactId>jackson-mapper-asl</artifactId>
+                <version>${org.codehaus.jackson.version}</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
@@ -200,6 +212,8 @@
         <wicket.version>6.4.0</wicket.version>
         <mustache.version>0.8.8</mustache.version>
         <mustachejs.version>0.7.0</mustachejs.version>
+        <org.codehaus.jackson.version>1.9.11</org.codehaus.jackson.version>
+        <wicket-webjars.version>0.1.0-SNAPSHOT</wicket-webjars.version>
     </properties>
 
 </project>

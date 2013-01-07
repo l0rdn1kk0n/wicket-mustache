@@ -1,5 +1,7 @@
-package de.agilecoders.wicket.mustache;
+package de.agilecoders.wicket.mustache.markup.html;
 
+import de.agilecoders.wicket.mustache.IScope;
+import de.agilecoders.wicket.mustache.WicketMustache;
 import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.WicketRuntimeException;
 import org.apache.wicket.markup.ComponentTag;
