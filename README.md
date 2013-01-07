@@ -14,15 +14,33 @@ Documentation:
 - Passes all of the `mustache` [specification tests](https://github.com/mustache/spec) modulo whitespace differences
 
 
-Maven dependency:
+Add maven dependency:
 
 ```xml
 <dependency>
   <groupId>de.agilecoders.wicket.mustache</groupId>
   <artifactId>wicket-mustache</artifactId>
-  <version>0.1.0-SNAPSHOT</version>
+  <version>0.1.0</version>
 </dependency>
 ```
+
+Installation:
+
+```java
+    /**
+     * @see org.apache.wicket.Application#init()
+     */
+    @Override
+    public void init() {
+        super.init();
+
+        WicketMustache.install(this);
+    }
+```
+
+Usage
+=====
+
 
 Example template file:
 
