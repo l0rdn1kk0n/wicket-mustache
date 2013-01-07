@@ -28,6 +28,10 @@ import org.apache.wicket.util.resource.StringResourceStream;
  */
 public abstract class ClientSideMustachePanel extends GenericPanel<IScope> implements IMarkupResourceStreamProvider {
 
+    protected static final String DATA_ID = "data-template";
+
+    private String templateData;
+
     /**
      * Construct.
      *
@@ -72,8 +76,16 @@ public abstract class ClientSideMustachePanel extends GenericPanel<IScope> imple
     /**
      * @return new javascript that renders mustache compiled content into panels body.
      */
-    private CharSequence createScript() {
-        return "$(\"#" + getMarkupId(true) + "\").html(Mustache.render($(\"#" + getMarkupId(true) + "\").attr('data-template'), " + Json.stringify(getModelObject()) + "))";
+    protected CharSequence createScript() {
+        return "$(\"#" + getMarkupId(true) + "\").html(Mustache.render($(\"#" + getMarkupId(true) + "\").attr('" + DATA_ID + "'), " +
+               createTemplateDataAsJsonString() + "))";
+    }
+
+    /**
+     * @return template data
+     */
+    protected CharSequence createTemplateDataAsJsonString() {
+        return Json.stringify(getModelObject());
     }
 
     /**
@@ -89,17 +101,19 @@ public abstract class ClientSideMustachePanel extends GenericPanel<IScope> imple
      * @return reader for the mustache template
      */
     protected final String newTemplate() {
-        final IResourceStream resource = newTemplateResourceStream();
-        if (resource == null) {
-            throw new IllegalArgumentException("newTemplateResourceStream must return a resource");
+        if (templateData == null) {
+            final IResourceStream resource = newTemplateResourceStream();
+            if (resource == null) {
+                throw new IllegalArgumentException("newTemplateResourceStream must return a resource");
+            }
+
+            templateData = ResourceUtil.readString(resource);
+            if (templateData == null) {
+                throw new IllegalArgumentException("can't find template content on given resource.");
+            }
         }
 
-        final String template = ResourceUtil.readString(resource);
-        if (template != null) {
-            return template;
-        }
-
-        throw new IllegalArgumentException("can't find template content on given resource.");
+        return templateData;
     }
 
     /**
@@ -109,5 +123,12 @@ public abstract class ClientSideMustachePanel extends GenericPanel<IScope> imple
     public final IResourceStream getMarkupResourceStream(final MarkupContainer container, final Class<?> containerClass) {
         // evaluate the template and return a new StringResourceStream
         return new StringResourceStream("<wicket:panel></wicket:panel>");
+    }
+
+    @Override
+    public void detachModels() {
+        super.detachModels();
+
+        templateData = null;
     }
 }
