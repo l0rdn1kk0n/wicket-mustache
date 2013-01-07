@@ -3,6 +3,7 @@ package de.agilecoders.wicket.mustache.markup.html;
 import de.agilecoders.wicket.mustache.IScope;
 import de.agilecoders.wicket.mustache.request.resource.MustacheJsReference;
 import de.agilecoders.wicket.mustache.util.Json;
+import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.WicketRuntimeException;
 import org.apache.wicket.markup.IMarkupResourceStreamProvider;
@@ -11,6 +12,7 @@ import org.apache.wicket.markup.head.JavaScriptHeaderItem;
 import org.apache.wicket.markup.head.OnDomReadyHeaderItem;
 import org.apache.wicket.markup.html.panel.GenericPanel;
 import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.resource.ResourceUtil;
 import org.apache.wicket.util.resource.IResourceStream;
 import org.apache.wicket.util.resource.StringResourceStream;
@@ -46,6 +48,13 @@ public abstract class ClientSideMustachePanel extends GenericPanel<IScope> imple
 
         setOutputMarkupId(true);
         setOutputMarkupPlaceholderTag(true);
+
+        add(new AttributeModifier("data-template", new LoadableDetachableModel<String>() {
+            @Override
+            public String load() {
+                return newTemplate();
+            }
+        }));
     }
 
     @Override
@@ -64,7 +73,7 @@ public abstract class ClientSideMustachePanel extends GenericPanel<IScope> imple
      * @return new javascript that renders mustache compiled content into panels body.
      */
     private CharSequence createScript() {
-        return "$(\"#" + getMarkupId(true) + "\").html(Mustache.render($(\"#" + getMarkupId(true) + "\").html(), " + Json.stringify(getModelObject()) + "))";
+        return "$(\"#" + getMarkupId(true) + "\").html(Mustache.render($(\"#" + getMarkupId(true) + "\").attr('data-template'), " + Json.stringify(getModelObject()) + "))";
     }
 
     /**
@@ -99,6 +108,6 @@ public abstract class ClientSideMustachePanel extends GenericPanel<IScope> imple
     @Override
     public final IResourceStream getMarkupResourceStream(final MarkupContainer container, final Class<?> containerClass) {
         // evaluate the template and return a new StringResourceStream
-        return new StringResourceStream("<wicket:panel>" + newTemplate() + "</wicket:panel>");
+        return new StringResourceStream("<wicket:panel></wicket:panel>");
     }
 }

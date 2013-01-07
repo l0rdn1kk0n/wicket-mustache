@@ -1,6 +1,6 @@
 package de.agilecoders.wicket;
 
-import de.agilecoders.wicket.webjars.util.file.WebjarsResourceFinder;
+import de.agilecoders.wicket.mustache.WicketMustache;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.protocol.http.WebApplication;
 
@@ -23,6 +23,6 @@ public class WicketApplication extends WebApplication {
     public void init() {
         super.init();
 
-        getResourceSettings().getResourceFinders().add(new WebjarsResourceFinder());
+        WicketMustache.install(this);
     }
 }

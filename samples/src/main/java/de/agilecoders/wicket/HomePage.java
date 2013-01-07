@@ -39,6 +39,12 @@ public class HomePage extends WebPage {
                 item2.put("features", Lists.newArrayList("Old!", "Ugly!"));
                 data.add(item2);
 
+                Map<String, Object> item3 = Maps.newHashMap();
+                item3.put("name", "Item 3");
+                item3.put("price", "$0.99");
+                item3.put("features", false);
+                data.add(item3);
+
                 Map<String, Object> map = Maps.newHashMap();
                 map.put("items", data);
                 return WicketMustache.newScopedMap(map);

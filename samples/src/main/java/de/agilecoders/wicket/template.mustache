@@ -1,8 +1,12 @@
-Items:<br>
+Items:<br/>
 {{#items}}
-Name: {{name}}<br>
-Price: {{price}}<br>
+Name: {{name}}<br/>
+Price: {{price}}<br/>
   {{#features}}
-  "Feature": {{.}}<br>
-  {{/features}}<br>
+  "Feature": {{.}}<br/>
+  {{/features}}
+  {{^features}}
+    no features.
+  {{/features}}
+  <hr/>
 {{/items}}

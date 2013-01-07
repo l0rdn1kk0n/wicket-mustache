@@ -4,6 +4,8 @@ import com.github.mustachejava.DefaultMustacheFactory;
 import com.github.mustachejava.Mustache;
 import com.github.mustachejava.MustacheFactory;
 import de.agilecoders.wicket.mustache.markup.html.MustachePanel;
+import de.agilecoders.wicket.webjars.util.file.WebjarsResourceFinder;
+import org.apache.wicket.Application;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.util.lang.Args;
 import org.apache.wicket.util.resource.IResourceStream;
@@ -108,6 +110,16 @@ public final class WicketMustache {
 
         return evaluatedTemplate;
     }
+
+    /**
+     * install all mustache configurations
+     *
+     * @param app current web application
+     */
+    public static void install(Application app) {
+        app.getResourceSettings().getResourceFinders().add(new WebjarsResourceFinder());
+    }
+
 
     public static <V> ScopedList<V> newScopedList(final List<V> list) {
         return new ScopedList<V>(list);
