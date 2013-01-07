@@ -2,8 +2,6 @@ package de.agilecoders.wicket;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import de.agilecoders.wicket.mustache.IScope;
-import de.agilecoders.wicket.mustache.WicketMustache;
 import de.agilecoders.wicket.mustache.markup.html.ClientSideMustachePanel;
 import de.agilecoders.wicket.mustache.markup.html.MustachePanel;
 import org.apache.wicket.core.util.resource.PackageResourceStream;
@@ -22,9 +20,9 @@ public class HomePage extends WebPage {
     public HomePage(final PageParameters parameters) {
         super(parameters);
 
-        IModel<IScope> scopeModel = new LoadableDetachableModel<IScope>() {
+        IModel<Object> scopeModel = new LoadableDetachableModel<Object>() {
             @Override
-            public IScope load() {
+            public Object load() {
                 final List<Object> data = Lists.newArrayList();
 
                 Map<String, Object> item1 = Maps.newHashMap();
@@ -47,7 +45,8 @@ public class HomePage extends WebPage {
 
                 Map<String, Object> map = Maps.newHashMap();
                 map.put("items", data);
-                return WicketMustache.newScopedMap(map);
+
+                return map;
             }
         };
 

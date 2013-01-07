@@ -1,6 +1,5 @@
 package de.agilecoders.wicket.mustache.markup.html;
 
-import de.agilecoders.wicket.mustache.IScope;
 import de.agilecoders.wicket.mustache.WicketMustache;
 import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.WicketRuntimeException;
@@ -27,7 +26,7 @@ import java.util.Map;
  *
  * @author miha
  */
-public abstract class MustachePanel extends GenericPanel<IScope> implements IMarkupResourceStreamProvider, IMarkupCacheKeyProvider {
+public abstract class MustachePanel extends GenericPanel<Object> implements IMarkupResourceStreamProvider, IMarkupCacheKeyProvider {
     private static final long serialVersionUID = 1L;
 
     private transient String evaluatedTemplate;
@@ -39,7 +38,7 @@ public abstract class MustachePanel extends GenericPanel<IScope> implements IMar
      * @param id    Component id
      * @param model Model with variables that can be substituted by mustache.
      */
-    public MustachePanel(final String id, final IModel<IScope> model) {
+    public MustachePanel(final String id, final IModel<Object> model) {
         super(id, model);
 
         this.escapeHtml = Model.of(false);

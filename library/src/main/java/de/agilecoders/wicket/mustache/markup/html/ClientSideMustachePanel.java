@@ -1,6 +1,5 @@
 package de.agilecoders.wicket.mustache.markup.html;
 
-import de.agilecoders.wicket.mustache.IScope;
 import de.agilecoders.wicket.mustache.request.resource.MustacheJsReference;
 import de.agilecoders.wicket.mustache.util.Json;
 import org.apache.wicket.AttributeModifier;
@@ -26,7 +25,7 @@ import org.apache.wicket.util.resource.StringResourceStream;
  *
  * @author miha
  */
-public abstract class ClientSideMustachePanel extends GenericPanel<IScope> implements IMarkupResourceStreamProvider {
+public abstract class ClientSideMustachePanel extends GenericPanel<Object> implements IMarkupResourceStreamProvider {
 
     protected static final String DATA_ID = "data-template";
 
@@ -47,7 +46,7 @@ public abstract class ClientSideMustachePanel extends GenericPanel<IScope> imple
      * @param id    the component id
      * @param model the template data
      */
-    public ClientSideMustachePanel(String id, IModel<IScope> model) {
+    public ClientSideMustachePanel(String id, IModel<Object> model) {
         super(id, model);
 
         setOutputMarkupId(true);
