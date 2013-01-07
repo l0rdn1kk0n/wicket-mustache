@@ -3,6 +3,7 @@ package de.agilecoders.wicket;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import de.agilecoders.wicket.mustache.markup.html.ClientSideMustachePanel;
+import de.agilecoders.wicket.mustache.markup.html.LazyLoadingClientSideMustachePanel;
 import de.agilecoders.wicket.mustache.markup.html.MustachePanel;
 import org.apache.wicket.core.util.resource.PackageResourceStream;
 import org.apache.wicket.markup.html.WebPage;
@@ -10,6 +11,7 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.util.resource.IResourceStream;
+import org.apache.wicket.util.time.Duration;
 
 import java.util.List;
 import java.util.Map;
@@ -61,6 +63,18 @@ public class HomePage extends WebPage {
             @Override
             protected IResourceStream newTemplateResourceStream() {
                 return new PackageResourceStream(HomePage.class, "template.mustache");
+            }
+        });
+
+        add(new LazyLoadingClientSideMustachePanel("template-lazy", scopeModel) {
+            @Override
+            protected IResourceStream newTemplateResourceStream() {
+                return new PackageResourceStream(HomePage.class, "template.mustache");
+            }
+
+            @Override
+            protected Duration delay() {
+                return Duration.seconds(5);
             }
         });
     }

@@ -194,3 +194,34 @@ public class HomePage extends WebPage {
     }
 }
 ```
+
+Client Side Rendering
+=====================
+
+If you want to render your mustache template on client side you have two options: `ClientSideMustachePanel` and `LazyLoadingClientSideMustachePanel`.
+
+```java
+add(new ClientSideMustachePanel("template-client", scopeModel) {
+    @Override
+    protected IResourceStream newTemplateResourceStream() {
+        return new PackageResourceStream(HomePage.class, "template.mustache");
+    }
+});
+
+add(new LazyLoadingClientSideMustachePanel("template-lazy", scopeModel) {
+    @Override
+    protected IResourceStream newTemplateResourceStream() {
+        return new PackageResourceStream(HomePage.class, "template.mustache");
+    }
+
+    @Override
+    protected CharSequence loading() {
+        return "please wait...";
+    }
+
+    @Override
+    protected Duration delay() {
+        return Duration.seconds(5);
+    }
+});
+```

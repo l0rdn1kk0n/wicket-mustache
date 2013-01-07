@@ -121,7 +121,14 @@ public abstract class ClientSideMustachePanel extends GenericPanel<Object> imple
     @Override
     public final IResourceStream getMarkupResourceStream(final MarkupContainer container, final Class<?> containerClass) {
         // evaluate the template and return a new StringResourceStream
-        return new StringResourceStream("<wicket:panel></wicket:panel>");
+        return new StringResourceStream(newMarkup());
+    }
+
+    /**
+     * @return new markup
+     */
+    protected CharSequence newMarkup() {
+        return "<wicket:panel></wicket:panel>";
     }
 
     @Override
