@@ -1,7 +1,10 @@
 package de.agilecoders.wicket.mustache.markup.html;
 
+import de.agilecoders.wicket.mustache.WicketMustache;
 import org.apache.wicket.ajax.AbstractDefaultAjaxBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.markup.head.IHeaderResponse;
+import org.apache.wicket.markup.head.OnDomReadyHeaderItem;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.util.time.Duration;
 
@@ -34,7 +37,7 @@ public abstract class LazyLoadingClientSideMustachePanel extends ClientSideMusta
         add(ajaxBehavior = new AbstractDefaultAjaxBehavior() {
             @Override
             protected void respond(AjaxRequestTarget target) {
-                target.appendJavaScript(LazyLoadingClientSideMustachePanel.super.createScript());
+                target.appendJavaScript(WicketMustache.createRenderScript(LazyLoadingClientSideMustachePanel.this, createTemplateDataAsJsonString()));
             }
         });
     }
@@ -54,8 +57,8 @@ public abstract class LazyLoadingClientSideMustachePanel extends ClientSideMusta
     }
 
     @Override
-    protected CharSequence createScript() {
-        return "setTimeout(function(){" + ajaxBehavior.getCallbackScript() + " }, " + delay().getMilliseconds() + ");";
+    protected void appendRenderScript(final IHeaderResponse response) {
+        response.render(OnDomReadyHeaderItem.forScript("setTimeout(function(){" + ajaxBehavior.getCallbackScript() + " }, " + delay().getMilliseconds() + ");"));
     }
 
     @Override

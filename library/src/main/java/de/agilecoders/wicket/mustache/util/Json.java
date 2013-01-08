@@ -3,7 +3,10 @@ package de.agilecoders.wicket.mustache.util;
 import com.google.common.base.Strings;
 import org.codehaus.jackson.JsonNode;
 import org.codehaus.jackson.JsonParser;
+import org.codehaus.jackson.Version;
+import org.codehaus.jackson.map.JsonSerializer;
 import org.codehaus.jackson.map.ObjectMapper;
+import org.codehaus.jackson.map.module.SimpleModule;
 import org.codehaus.jackson.node.ObjectNode;
 import org.codehaus.jackson.type.JavaType;
 
@@ -14,11 +17,25 @@ import org.codehaus.jackson.type.JavaType;
  */
 public final class Json {
 
+    private static final SimpleModule MODULE = new SimpleModule("wicket-mustache", new Version(1, 0, 0, null));
+
     /**
      * Private constructor to prevent instantiation.
      */
     private Json() {
         throw new UnsupportedOperationException();
+    }
+
+    /**
+     * Method that mapper module can use to register additional serializers to use for
+     * handling types.
+     *
+     * @param serializerClass type of serializer
+     * @param serializer      Object that can be called to find serializer for types supported
+     *                        by module (null returned for non-supported types)
+     */
+    public static void addSerializer(final Class serializerClass, final JsonSerializer<?> serializer) {
+        MODULE.addSerializer(serializerClass, serializer);
     }
 
     /**
@@ -29,6 +46,7 @@ public final class Json {
         ObjectMapper mapper = new ObjectMapper();
         mapper.configure(JsonParser.Feature.ALLOW_SINGLE_QUOTES, true);
         mapper.configure(JsonParser.Feature.ALLOW_UNQUOTED_FIELD_NAMES, true);
+        mapper.registerModule(MODULE);
 
         return mapper;
     }

@@ -6,11 +6,17 @@ import com.github.mustachejava.MustacheFactory;
 import de.agilecoders.wicket.mustache.markup.html.MustachePanel;
 import de.agilecoders.wicket.webjars.util.Webjars;
 import org.apache.wicket.Application;
+import org.apache.wicket.Component;
+import org.apache.wicket.core.util.resource.PackageResourceStream;
+import org.apache.wicket.markup.head.IHeaderResponse;
+import org.apache.wicket.markup.head.OnDomReadyHeaderItem;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.util.lang.Args;
 import org.apache.wicket.util.resource.IResourceStream;
+import org.apache.wicket.util.resource.ResourceStreamNotFoundException;
 import org.apache.wicket.util.string.Strings;
 
+import java.io.InputStreamReader;
 import java.io.Reader;
 import java.io.StringWriter;
 
@@ -21,10 +27,13 @@ import java.io.StringWriter;
  */
 public final class WicketMustache {
 
+    public static final String DATA_ID = "data-template";
+
     /**
      * holds the mustache factory.
      */
     private static final class MustacheHolder {
+
         private static final MustacheFactory factory = new DefaultMustacheFactory();
     }
 
@@ -52,6 +61,42 @@ public final class WicketMustache {
     }
 
     /**
+     * creates a mustache javascript that renders a template with given content.
+     *
+     * @param component The mustache component
+     * @param content   The content to render
+     * @return new javascript that renders the mustache template with given content
+     */
+    public static CharSequence createRenderScript(final Component component, final CharSequence content) {
+        final String markupId = component.getMarkupId(true);
+
+        return "$(\"#" + markupId + "\").html(Mustache.render($(\"#" + markupId +
+               "\").attr('" + WicketMustache.DATA_ID + "'), " + content + "))";
+    }
+
+    /**
+     * appends a mustache javascript that renders a template with given content.
+     *
+     * @param component The mustache component
+     * @param response  current header response
+     * @param content   The content to render
+     */
+    public static void appendRenderScript(final Component component, final IHeaderResponse response, final CharSequence content) {
+        response.render(OnDomReadyHeaderItem.forScript(createRenderScript(component, content)));
+    }
+
+    /**
+     * Gets a new reader for the mustache template.
+     *
+     * @param templateName The name of the template
+     * @param component    the reference component
+     * @return reader for the mustache template
+     */
+    public static Reader newTemplateReader(final String templateName, final Component component) throws ResourceStreamNotFoundException {
+        return new InputStreamReader(new PackageResourceStream(component.getClass(), templateName).getInputStream());
+    }
+
+    /**
      * compiles given template without any template data. "escapeHtml" is set to false.
      *
      * @param templateReader The template reader
@@ -70,7 +115,7 @@ public final class WicketMustache {
      * @param data           The template data
      * @return compiled template
      */
-    public static String compile(final Reader templateReader, final String templateId, final IScope data) {
+    public static String compile(final Reader templateReader, final String templateId, final Object data) {
         return compile(templateReader, templateId, data, false);
     }
 
@@ -110,7 +155,7 @@ public final class WicketMustache {
      *
      * @param app current web application
      */
-    public static void install(Application app) {
+    public static void install(final Application app) {
         Webjars.install(app);
     }
 

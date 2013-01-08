@@ -1,17 +1,16 @@
 package de.agilecoders.wicket.mustache.markup.html;
 
+import de.agilecoders.wicket.mustache.WicketMustache;
 import de.agilecoders.wicket.mustache.request.resource.MustacheJsReference;
 import de.agilecoders.wicket.mustache.util.Json;
-import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.WicketRuntimeException;
+import org.apache.wicket.markup.ComponentTag;
 import org.apache.wicket.markup.IMarkupResourceStreamProvider;
 import org.apache.wicket.markup.head.IHeaderResponse;
 import org.apache.wicket.markup.head.JavaScriptHeaderItem;
-import org.apache.wicket.markup.head.OnDomReadyHeaderItem;
 import org.apache.wicket.markup.html.panel.GenericPanel;
 import org.apache.wicket.model.IModel;
-import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.resource.ResourceUtil;
 import org.apache.wicket.util.resource.IResourceStream;
 import org.apache.wicket.util.resource.StringResourceStream;
@@ -26,8 +25,6 @@ import org.apache.wicket.util.resource.StringResourceStream;
  * @author miha
  */
 public abstract class ClientSideMustachePanel extends GenericPanel<Object> implements IMarkupResourceStreamProvider {
-
-    protected static final String DATA_ID = "data-template";
 
     private String templateData;
 
@@ -50,34 +47,33 @@ public abstract class ClientSideMustachePanel extends GenericPanel<Object> imple
         super(id, model);
 
         setOutputMarkupId(true);
-        setOutputMarkupPlaceholderTag(true);
-
-        add(new AttributeModifier("data-template", new LoadableDetachableModel<String>() {
-            @Override
-            public String load() {
-                return newTemplate();
-            }
-        }));
     }
 
     @Override
-    public void renderHead(IHeaderResponse response) {
-        super.renderHead(response);
+    protected void onComponentTag(ComponentTag tag) {
+        super.onComponentTag(tag);
 
         if (size() > 0) {
             throw new WicketRuntimeException("you can't add components to a ClientSideMustachePanel");
         }
 
+        tag.getAttributes().put(WicketMustache.DATA_ID, newTemplate());
+    }
+
+    @Override
+    public void renderHead(final IHeaderResponse response) {
+        super.renderHead(response);
+
         response.render(JavaScriptHeaderItem.forReference(MustacheJsReference.instance()));
-        response.render(OnDomReadyHeaderItem.forScript(createScript()));
+
+        appendRenderScript(response);
     }
 
     /**
      * @return new javascript that renders mustache compiled content into panels body.
      */
-    protected CharSequence createScript() {
-        return "$(\"#" + getMarkupId(true) + "\").html(Mustache.render($(\"#" + getMarkupId(true) + "\").attr('" + DATA_ID + "'), " +
-               createTemplateDataAsJsonString() + "))";
+    protected void appendRenderScript(final IHeaderResponse response) {
+        WicketMustache.appendRenderScript(this, response, createTemplateDataAsJsonString());
     }
 
     /**

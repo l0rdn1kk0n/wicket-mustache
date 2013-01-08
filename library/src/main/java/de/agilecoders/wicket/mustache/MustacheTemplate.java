@@ -3,17 +3,12 @@ package de.agilecoders.wicket.mustache;
 import org.apache.wicket.Component;
 import org.apache.wicket.WicketRuntimeException;
 import org.apache.wicket.behavior.Behavior;
-import org.apache.wicket.core.util.resource.PackageResourceStream;
 import org.apache.wicket.markup.head.IHeaderResponse;
 import org.apache.wicket.markup.head.StringHeaderItem;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.util.lang.Args;
-import org.apache.wicket.util.resource.ResourceStreamNotFoundException;
 import org.apache.wicket.util.string.Strings;
-
-import java.io.InputStreamReader;
-import java.io.Reader;
 
 /**
  * An {@link org.apache.wicket.markup.html.IHeaderContributor} implementation that renders a
@@ -25,14 +20,14 @@ public class MustacheTemplate extends Behavior {
     private static final long serialVersionUID = 14121982L;
 
     private final IModel<String> templateName;
-    private final IModel<IScope> templateData;
+    private final IModel<Object> templateData;
 
     /**
      * Construct. Default template name is used "${ComponentSimpleClassName}.mustache"
      *
      * @param templateData The template data
      */
-    public MustacheTemplate(final IModel<IScope> templateData) {
+    public MustacheTemplate(final IModel<Object> templateData) {
         this(Model.of(""), templateData);
     }
 
@@ -42,7 +37,7 @@ public class MustacheTemplate extends Behavior {
      * @param templateName The template name
      * @param templateData The template data
      */
-    public MustacheTemplate(final IModel<String> templateName, final IModel<IScope> templateData) {
+    public MustacheTemplate(final IModel<String> templateName, final IModel<Object> templateData) {
         super();
 
         Args.notNull(templateData, "templateData");
@@ -79,22 +74,11 @@ public class MustacheTemplate extends Behavior {
         }
 
         try {
-            return WicketMustache.compile(newTemplateReader(templateName.getObject(), component), templateName.getObject(),
+            return WicketMustache.compile(WicketMustache.newTemplateReader(templateName.getObject(), component), templateName.getObject(),
                                           templateData.getObject(), escapeHtml());
         } catch (Exception e) {
             throw new WicketRuntimeException("Error while executing mustache template script: " + templateName.getObject(), e);
         }
-    }
-
-    /**
-     * Gets a new reader for the mustache template.
-     *
-     * @param templateName The name of the template
-     * @param component    the reference component
-     * @return reader for the mustache template
-     */
-    protected Reader newTemplateReader(final String templateName, final Component component) throws ResourceStreamNotFoundException {
-        return new InputStreamReader(new PackageResourceStream(component.getClass(), templateName).getInputStream());
     }
 
     @Override
