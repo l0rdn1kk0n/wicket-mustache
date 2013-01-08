@@ -59,7 +59,7 @@ public class MustacheTemplate extends Behavior {
     /**
      * @return whether to escape HTML characters. The default value is false
      */
-    protected boolean escapeHtml() {
+    protected boolean isEscapeHtml() {
         return false;
     }
 
@@ -75,7 +75,7 @@ public class MustacheTemplate extends Behavior {
 
         try {
             return WicketMustache.compile(WicketMustache.newTemplateReader(templateName.getObject(), component), templateName.getObject(),
-                                          templateData.getObject(), escapeHtml());
+                                          templateData.getObject(), isEscapeHtml());
         } catch (Exception e) {
             throw new WicketRuntimeException("Error while executing mustache template script: " + templateName.getObject(), e);
         }

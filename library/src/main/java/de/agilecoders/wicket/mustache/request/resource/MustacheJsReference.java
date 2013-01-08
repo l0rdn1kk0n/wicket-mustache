@@ -8,6 +8,7 @@ import de.agilecoders.wicket.webjars.request.resource.WebjarsJavaScriptResourceR
  * @author miha
  */
 public class MustacheJsReference extends WebjarsJavaScriptResourceReference {
+    private static final long serialVersionUID = 14121982L;
     private static final String FILENAME = "mustachejs/%s/mustache.js";
 
     /**

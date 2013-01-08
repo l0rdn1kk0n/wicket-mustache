@@ -27,7 +27,7 @@ import java.util.Map;
  * @author miha
  */
 public abstract class MustachePanel extends GenericPanel<Object> implements IMarkupResourceStreamProvider, IMarkupCacheKeyProvider {
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 14121982L;
 
     private transient String evaluatedTemplate;
     private final IModel<Boolean> escapeHtml;

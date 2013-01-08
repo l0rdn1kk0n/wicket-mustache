@@ -14,6 +14,7 @@ import org.apache.wicket.util.time.Duration;
  * @author miha
  */
 public abstract class LazyLoadingClientSideMustachePanel extends ClientSideMustachePanel {
+    private static final long serialVersionUID = 14121982L;
     private final AbstractDefaultAjaxBehavior ajaxBehavior;
 
     /**

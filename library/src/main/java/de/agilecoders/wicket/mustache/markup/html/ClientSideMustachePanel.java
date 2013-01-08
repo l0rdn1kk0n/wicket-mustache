@@ -25,6 +25,7 @@ import org.apache.wicket.util.resource.StringResourceStream;
  * @author miha
  */
 public abstract class ClientSideMustachePanel extends GenericPanel<Object> implements IMarkupResourceStreamProvider {
+    private static final long serialVersionUID = 14121982L;
 
     private String templateData;
 
