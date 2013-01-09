@@ -9,7 +9,6 @@ import org.apache.wicket.markup.IMarkupResourceStreamProvider;
 import org.apache.wicket.markup.MarkupStream;
 import org.apache.wicket.markup.html.panel.GenericPanel;
 import org.apache.wicket.model.IModel;
-import org.apache.wicket.model.Model;
 import org.apache.wicket.resource.ResourceUtil;
 import org.apache.wicket.util.resource.IResourceStream;
 import org.apache.wicket.util.resource.StringResourceStream;
@@ -30,7 +29,6 @@ public abstract class MustachePanel extends GenericPanel<Object> implements IMar
     private static final long serialVersionUID = 14121982L;
 
     private transient String evaluatedTemplate;
-    private final IModel<Boolean> escapeHtml;
 
     /**
      * Construct.
@@ -41,7 +39,7 @@ public abstract class MustachePanel extends GenericPanel<Object> implements IMar
     public MustachePanel(final String id, final IModel<Object> model) {
         super(id, model);
 
-        this.escapeHtml = Model.of(false);
+        setEscapeModelStrings(false);
     }
 
     /**
@@ -72,26 +70,6 @@ public abstract class MustachePanel extends GenericPanel<Object> implements IMar
     }
 
     /**
-     * Gets whether to escape HTML characters.
-     *
-     * @return whether to escape HTML characters. The default value is false.
-     */
-    public final boolean isEscapeHtml() {
-        return escapeHtml.getObject();
-    }
-
-    /**
-     * whether to escape HTML characters. The default value is false.
-     *
-     * @param escapeHtml true to escape HTML characters
-     * @return this instance for chaining
-     */
-    public final MustachePanel setEscapeHtml(final boolean escapeHtml) {
-        this.escapeHtml.setObject(escapeHtml);
-        return this;
-    }
-
-    /**
      * Evaluates the template and returns the result.
      *
      * @param templateReader used to read the template
@@ -101,7 +79,7 @@ public abstract class MustachePanel extends GenericPanel<Object> implements IMar
         // evaluate and cache template data
         if (evaluatedTemplate == null) {
             try {
-                evaluatedTemplate = WicketMustache.compile(templateReader, getId(), getModelObject(), isEscapeHtml());
+                evaluatedTemplate = WicketMustache.compile(templateReader, getId(), getModelObject(), getEscapeModelStrings());
             } catch (RuntimeException e) {
                 onException(e);
             }
@@ -170,7 +148,5 @@ public abstract class MustachePanel extends GenericPanel<Object> implements IMar
 
         // clear cached template data
         evaluatedTemplate = null;
-
-        escapeHtml.detach();
     }
 }
