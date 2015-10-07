@@ -4,13 +4,13 @@ import com.github.mustachejava.DefaultMustacheFactory;
 import com.github.mustachejava.Mustache;
 import com.github.mustachejava.MustacheFactory;
 import de.agilecoders.wicket.mustache.markup.html.MustachePanel;
-import de.agilecoders.wicket.webjars.util.Webjars;
-import org.apache.wicket.Application;
+import de.agilecoders.wicket.webjars.WicketWebjars;
 import org.apache.wicket.Component;
 import org.apache.wicket.core.util.resource.PackageResourceStream;
 import org.apache.wicket.markup.head.IHeaderResponse;
 import org.apache.wicket.markup.head.OnDomReadyHeaderItem;
 import org.apache.wicket.model.IModel;
+import org.apache.wicket.protocol.http.WebApplication;
 import org.apache.wicket.util.lang.Args;
 import org.apache.wicket.util.resource.IResourceStream;
 import org.apache.wicket.util.resource.ResourceStreamNotFoundException;
@@ -155,8 +155,8 @@ public final class WicketMustache {
      *
      * @param app current web application
      */
-    public static void install(final Application app) {
-        Webjars.install(app);
+    public static void install(final WebApplication app) {
+        WicketWebjars.install(app);
     }
 
     /**
